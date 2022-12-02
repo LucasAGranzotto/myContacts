@@ -37,7 +37,8 @@ class ContactController {
 
   async index(req, res) {
     // listar todos os registros
-    const contacts = await ContactRepository.findAll();
+    const { orderBy } = req.query;
+    const contacts = await ContactRepository.findAll(orderBy);
     res.json(contacts);
   }
 
@@ -110,12 +111,6 @@ class ContactController {
   async delete(req, res) {
     // excluir um registro
     const { id } = req.params;
-
-    const contact = await this.#getContactById(id, res);
-
-    if (!contact) {
-      return this.#contactNotExists(res, id);
-    }
 
     await ContactRepository.delete(id);
     res.sendStatus(StatusCodes.NO_CONTENT);
