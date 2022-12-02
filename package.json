@@ -1,0 +1,28 @@
+{
+  "name": "mycontacts",
+  "version": "1.0.0",
+  "description": "API to store contacts",
+  "main": "src/index.js",
+  "author": "Lucas Alexandre Granzotto <lucasagranzotto@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "express-validator": "^6.14.2",
+    "http-status-codes": "^2.2.0",
+    "uuid": "^9.0.0"
+  },
+  "scripts": {
+    "lint": "eslint 'src/**/*.js' --fix",
+    "format": "prettier-eslint 'src/**/*.{js,json}' --write",
+    "dev": "nodemon src/index.js",
+    "debug": "nodemon --inspect src/index.js"
+  },
+  "devDependencies": {
+    "eslint": "^7.32.0 || ^8.2.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-promise": "^6.1.1",
+    "nodemon": "^2.0.20",
+    "prettier-eslint-cli": "^7.1.0"
+  }
+}
