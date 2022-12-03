@@ -1,15 +1,15 @@
 /* eslint-disable camelcase */
 const { StatusCodes } = require('http-status-codes');
-const ContactRepository = require('../repositories/ContactRepository');
+const ContactsRepository = require('../repositories/ContactsRepository');
 
 class ContactController {
   async #getContactById(id) {
-    const contact = await ContactRepository.findById(id);
+    const contact = await ContactsRepository.findById(id);
     return contact;
   }
 
   async #getContactByEmail(email) {
-    const contact = await ContactRepository.findByEmail(email);
+    const contact = await ContactsRepository.findByEmail(email);
     return contact;
   }
 
@@ -38,7 +38,7 @@ class ContactController {
   async index(req, res) {
     // listar todos os registros
     const { orderBy } = req.query;
-    const contacts = await ContactRepository.findAll(orderBy);
+    const contacts = await ContactsRepository.findAll(orderBy);
     res.json(contacts);
   }
 
@@ -67,7 +67,7 @@ class ContactController {
       return this.#emailAlreadyExists(res, email);
     }
 
-    const newContact = await ContactRepository.create({
+    const newContact = await ContactsRepository.create({
       name,
       email,
       phone,
@@ -98,7 +98,7 @@ class ContactController {
       }
     }
 
-    const contact = await ContactRepository.update(id, {
+    const contact = await ContactsRepository.update(id, {
       name,
       email,
       phone,
@@ -112,7 +112,7 @@ class ContactController {
     // excluir um registro
     const { id } = req.params;
 
-    await ContactRepository.delete(id);
+    await ContactsRepository.delete(id);
     res.sendStatus(StatusCodes.NO_CONTENT);
   }
 }
