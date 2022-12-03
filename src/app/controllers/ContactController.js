@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
 const { StatusCodes } = require('http-status-codes');
 const ContactsRepository = require('../repositories/ContactsRepository');
+const checkValidUUID = require('../utils/checkValidUUID');
 
 class ContactController {
   async #getContactById(id) {
@@ -46,6 +47,10 @@ class ContactController {
     // listar um registro
     const { id } = req.params;
 
+    if (!checkValidUUID(id)) {
+      return this.#contactNotExists(res, id);
+    }
+
     const contact = await this.#getContactById(id, res);
 
     if (!contact) {
@@ -81,6 +86,10 @@ class ContactController {
     // atualizar um registro
     const { id } = req.params;
 
+    if (!checkValidUUID(id)) {
+      return this.#contactNotExists(res, id);
+    }
+
     const {
       name, email, phone, category_id,
     } = req.body;
@@ -111,6 +120,10 @@ class ContactController {
   async delete(req, res) {
     // excluir um registro
     const { id } = req.params;
+
+    if (!checkValidUUID(id)) {
+      return res.sendStatus(StatusCodes.NO_CONTENT);
+    }
 
     await ContactsRepository.delete(id);
     res.sendStatus(StatusCodes.NO_CONTENT);

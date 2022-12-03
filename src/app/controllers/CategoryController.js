@@ -1,5 +1,6 @@
 const { StatusCodes } = require('http-status-codes');
 const CategoriesRepository = require('../repositories/CategoriesRepository');
+const checkValidUUID = require('../utils/checkValidUUID');
 
 class CategoryController {
   async #getCategoryById(id) {
@@ -44,6 +45,10 @@ class CategoryController {
     // listar um registro
     const { id } = req.params;
 
+    if (!checkValidUUID(id)) {
+      return this.#categoryNotExists(res, id);
+    }
+
     const contact = await this.#getCategoryById(id, res);
 
     if (!contact) {
@@ -72,6 +77,10 @@ class CategoryController {
     // atualizar um registro
     const { id } = req.params;
 
+    if (!checkValidUUID(id)) {
+      return this.#categoryNotExists(res, id);
+    }
+
     const { name } = req.body;
 
     const categoryById = await this.#getCategoryById(id, res);
@@ -95,6 +104,10 @@ class CategoryController {
   async delete(req, res) {
     // excluir um registro
     const { id } = req.params;
+
+    if (!checkValidUUID(id)) {
+      return res.sendStatus(StatusCodes.NO_CONTENT);
+    }
 
     await CategoriesRepository.delete(id);
     res.sendStatus(StatusCodes.NO_CONTENT);
