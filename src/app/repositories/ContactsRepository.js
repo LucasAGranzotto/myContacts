@@ -6,8 +6,16 @@ class ContactsRepository {
     const direction = orderBy.toUpperCase() === 'DESC' ? 'DESC' : 'ASC';
     const rows = await db.query(
       `
-        SELECT * FROM contacts
-        ORDER BY name ${direction}
+        SELECT a.id,
+               a.name,
+               a.email,
+               a.phone,
+               a.category_id,
+               b.name AS category_name
+          FROM contacts a
+          LEFT JOIN categories b
+            ON b.id = a.category_id
+        ORDER BY a.name ${direction}
       `,
     );
     return rows;
@@ -16,7 +24,16 @@ class ContactsRepository {
   async findById(id) {
     const [row] = await db.query(
       `
-        SELECT * FROM contacts WHERE id = $1
+        SELECT a.id,
+               a.name,
+               a.email,
+               a.phone,
+               a.category_id,
+               b.name AS category_name
+          FROM contacts a
+          LEFT JOIN categories b
+            ON b.id = a.category_id
+         WHERE a.id = $1
       `,
       [id],
     );
@@ -26,7 +43,16 @@ class ContactsRepository {
   async findByEmail(email) {
     const [row] = await db.query(
       `
-        SELECT * FROM contacts WHERE email = $1
+        SELECT a.id,
+               a.name,
+               a.email,
+               a.phone,
+               a.category_id,
+               b.name AS category_name
+          FROM contacts a
+          LEFT JOIN categories b
+            ON b.id = a.category_id
+         WHERE a.email = $1
       `,
       [email],
     );
@@ -68,7 +94,8 @@ class ContactsRepository {
   async delete(id) {
     const deleteOp = await db.query(
       `
-        DELETE FROM contacts WHERE id = $1
+        DELETE FROM contacts
+         WHERE id = $1
       `,
       [id],
     );
