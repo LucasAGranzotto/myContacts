@@ -1,11 +1,14 @@
-const { body } = require('express-validator');
+const { check } = require('express-validator');
 
 class ContactValidator {
   rules = [
-    body('name').notEmpty().withMessage('Name is required').escape()
+    check('name')
+      .notEmpty()
+      .withMessage('Name is required')
+      .escape()
       .trim(),
 
-    body('email')
+    check('email')
       .notEmpty()
       .withMessage('E-mail is required')
       .bail()
@@ -13,14 +16,14 @@ class ContactValidator {
       .withMessage('E-mail is invalid')
       .normalizeEmail(),
 
-    body('phone')
+    check('phone')
       .notEmpty()
       .withMessage('Phone is required')
       .bail()
       .isMobilePhone('pt-BR', { strictMode: true })
       .withMessage('Phone is invalid'),
 
-    body('category_id')
+    check('category_id')
       .notEmpty()
       .withMessage('Category is required')
       .bail()
