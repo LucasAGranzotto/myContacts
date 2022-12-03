@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const { Client } = require('pg');
 
 const client = new Client({
@@ -11,6 +12,11 @@ const client = new Client({
 client.connect();
 
 exports.query = async (sqlQuery, values) => {
-  const { rows } = await client.query(sqlQuery, values);
-  return rows;
+  try {
+    const { rows } = await client.query(sqlQuery, values);
+    return rows;
+  } catch (err) {
+    console.log(err.stack);
+    return [];
+  }
 };
